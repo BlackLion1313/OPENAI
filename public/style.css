@@ -179,18 +179,5 @@ nav ul ul li a {
 	color: white;
 	padding: 10px;
 }
-#hiddenText {
-	position: absolute;
-	margin-top: 80px;
-	margin-left: 980px;
 
-	border-radius: 7px;
-	background-color: black;
-	padding: 3px;
-	box-shadow: 0 4px 8px rgba(23, 66, 255, 0.5);
-}
-li {
-	color: #fff;
-	font-size: 16px;
-}
 
