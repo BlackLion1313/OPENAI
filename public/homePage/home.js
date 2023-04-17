@@ -120,12 +120,9 @@ document.getElementById('people-btn').addEventListener('click', showAfterClickPe
 
 
 
-
 const showAfterClickVehicles = () => {
   let vehiclesDiv = document.querySelector('.transport');
   vehiclesDiv.classList.add('transport--visible');
 }
 document.getElementById('vehicles-btn').addEventListener('click', addVehicles);
 document.getElementById('vehicles-btn').addEventListener('click', showAfterClickVehicles);
-
-
