@@ -1,4 +1,3 @@
-
 const apiUrl = 'https://swapi.dev/api/';
 
 let selectedGender = '';
@@ -22,7 +21,10 @@ function renderList(list, entity) {
       const listItem = document.createElement('div');
       listItem.classList.add('list-item');
       listItem.textContent = item.name;
-      listItem.addEventListener('click', () => renderDetails(item, entity));
+      listItem.addEventListener('click', () => {
+        renderDetails(item, entity);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
       listContainer.appendChild(listItem);
     }
   });
@@ -34,13 +36,13 @@ function renderDetails(item, entity) {
   const title = document.createElement('h2');
   title.textContent = item.name;
   detailsContainer.appendChild(title);
-  const properties = Object.keys(item);
-  properties.forEach(property => {
+  const properties = Object.entries(item);
+  for (let i = 0; i < 8 && i < properties.length; i++) {
     const detailItem = document.createElement('div');
     detailItem.classList.add('detail-item');
-    detailItem.innerHTML = `<strong>${property}:</strong> ${item[property]}`;
+    detailItem.innerHTML = `<strong>${properties[i][0]}:</strong> ${properties[i][1]}`;
     detailsContainer.appendChild(detailItem);
-  });
+  }
 }
 
 const charactersBtn = document.getElementById('characters-btn');
@@ -109,9 +111,10 @@ femaleCheckbox.addEventListener('change', () => {
   }
   init();
 });
+
 function init() {
-fetchEntities('people')
-.then(people => renderList(people, 'people'));
+  fetchEntities('people')
+    .then(people => renderList(people, 'people'));
 }
 
 init();
