@@ -1,128 +1,224 @@
-"use strict";
 
-// Функция фильтрации массива по заданному свойству и значению
-function filter(arr, prop, value) {
-  let result = [];
-  let copy = [...arr];
+// const apiUrl = 'https://swapi.dev/api/';
 
-  for (const item of copy) {
-    if (String(item[prop]).includes(value) == true) result.push(item)
+// const getPeople = async () => {
+// try {
+// const response = await fetch(`${apiUrl}people/`);
+// const data = await response.json();
+// return data.results;
+// } catch (error) {
+// console.log(error);
+// }
+// };
+
+// const getVehicles = async () => {
+// try {
+// const response = await fetch(`${apiUrl}vehicles/`);
+// const data = await response.json();
+// return data.results;
+// } catch (error) {
+// console.log(error);
+// }
+// };
+
+// const addPeople = (users) => {
+//   const humansDiv = document.querySelector('.humans');
+//   humansDiv.innerHTML = '';
+
+//   for (let i = 0; i < users.length; i++) {
+//     let personDiv = document.createElement('div');
+
+//     addParagraph(personDiv, `Name: ${users[i].name}`);
+//     addParagraph(personDiv, `Height: ${users[i].height}`);
+//     addParagraph(personDiv, `Mass: ${users[i].mass}`);
+//     addParagraph(personDiv, `Hair color: ${users[i].hair_color}`);
+//     addParagraph(personDiv, `Skin color: ${users[i].skin_color}`);
+//     addParagraph(personDiv, `Eye color: ${users[i].eye_color}`);
+//     addParagraph(personDiv, `Birth year: ${users[i].birth_year}`);
+//     addParagraph(personDiv, `Gender: ${users[i].gender}`);
+
+//     humansDiv.appendChild(personDiv);
+//   }
+// };
+
+// const addVehicles = (vehicles) => {
+//   const vehiclesDiv = document.querySelector('.transport');
+//   vehiclesDiv.innerHTML = '';
+
+//   for (let j = 0; j < vehicles.length; j++) {
+//     let vehicleDiv = document.createElement('div');
+
+//     addParagraph(vehicleDiv, `Name: ${vehicles[j].name}`);
+//     addParagraph(vehicleDiv, `Model: ${vehicles[j].model}`);
+//     addParagraph(vehicleDiv, `Manufacturer: ${vehicles[j].manufacturer}`);
+//     addParagraph(vehicleDiv, `Cost in credits: ${vehicles[j].cost_in_credits}`);
+//     addParagraph(vehicleDiv, `Length: ${vehicles[j].length}`);
+//     addParagraph(vehicleDiv, `Max atmosphering speed: ${vehicles[j].max_atmosphering_speed}`);
+//     addParagraph(vehicleDiv, `Crew: ${vehicles[j].crew}`);
+//     addParagraph(vehicleDiv, `Passengers: ${vehicles[j].passengers}`);
+//     addParagraph(vehicleDiv, `Cargo capacity: ${vehicles[j].cargo_capacity}`);
+
+//     vehiclesDiv.appendChild(vehicleDiv);
+//   }
+// };
+
+// const addParagraph = (parentElement, text) => {
+//   let paragraph = document.createElement('p');
+//   paragraph.innerHTML = text;
+//   parentElement.appendChild(paragraph);
+// };
+
+// const showHumans = () => {
+//   let humansDiv = document.querySelector('.humans');
+//   humansDiv.classList.add('humans--visible');
+// };
+
+// const hideHumans = () => {
+//   let humansDiv = document.querySelector('.humans');
+//   humansDiv.classList.remove('humans--visible');
+// };
+
+// const showVehicles = () => {
+//   let vehiclesDiv = document.querySelector('.transport');
+//   vehiclesDiv.classList.add('transport--visible');
+// };
+
+// const hideVehicles = () => {
+//   let vehiclesDiv = document.querySelector('.transport');
+//   vehiclesDiv.classList.remove('transport--visible');
+// };
+
+// const peopleBtn = document.getElementById('people-btn');
+// const vehiclesBtn = document.getElementById('vehicles-btn');
+
+// peopleBtn.addEventListener('click', () => {
+//   hideVehicles();
+//   getPeople().then((users) => {
+//     addPeople(users);
+//     showHumans();
+//   });
+// });
+
+// vehiclesBtn.addEventListener('click', () => {
+//   hideHumans();
+//   getVehicles().then((vehicles) => {
+//     addVehicles(vehicles);
+//     showVehicles();
+//   });
+// });
+const apiUrl = 'https://swapi.dev/api/';
+
+let selectedGender = '';
+
+async function fetchEntities(entity) {
+  try {
+    const url = apiUrl + entity + (selectedGender ? `?gender=${selectedGender}` : '');
+    const response = await fetch(url);
+    const data = await response.json();
+    return data.results;
+  } catch (error) {
+    console.log(error);
   }
-  return result;
 }
 
-// Функция отображения отфильтрованного массива пользователей в виде списка
-function render(arr) {
-  const list = document.querySelector('.users-list');
-  list.innerHTML = "users";
-
-  const nameVal = document.getElementById('inp-name').value,
-    heightVal = document.getElementById('inp-height').value
-
-  let newArr = [...arr]
-  if (nameVal !== '') newArr = filter(newArr, 'name', nameVal)
-  if (heightVal !== '') newArr = filter(newArr, 'height', heightVal)
-  
-  for (const user of newArr) {
-    const li = document.createElement('li');
-    li.textContent = user.name + ', Height: ' + user.height;
-    list.append(li)
-  }
+function renderList(list, entity) {
+  const listContainer = document.getElementById('list-container');
+  listContainer.innerHTML = '';
+  list.forEach(item => {
+    if (!selectedGender || item.gender.toLowerCase() === selectedGender) {
+      const listItem = document.createElement('div');
+      listItem.classList.add('list-item');
+      listItem.textContent = item.name;
+      listItem.addEventListener('click', () => renderDetails(item, entity));
+      listContainer.appendChild(listItem);
+    }
+  });
 }
 
-// Добавление обработчика событий на форму фильтрации
-document.getElementById('filter-form').addEventListener('submit', function(event) {
-  event.preventDefault(); // Предотвращение отправки формы
-  render(users); // Отображение отфильтрованного списка пользователей
+function renderDetails(item, entity) {
+  const detailsContainer = document.getElementById('details-container');
+  detailsContainer.innerHTML = '';
+  const title = document.createElement('h2');
+  title.textContent = item.name;
+  detailsContainer.appendChild(title);
+  const properties = Object.keys(item);
+  properties.forEach(property => {
+    const detailItem = document.createElement('div');
+    detailItem.classList.add('detail-item');
+    detailItem.innerHTML = `<strong>${property}:</strong> ${item[property]}`;
+    detailsContainer.appendChild(detailItem);
+  });
+}
+
+const charactersBtn = document.getElementById('characters-btn');
+const planetsBtn = document.getElementById('planets-btn');
+const vehiclesBtn = document.getElementById('vehicles-btn');
+
+charactersBtn.addEventListener('click', async () => {
+  try {
+    const people = await fetchEntities('people');
+    renderList(people, 'people');
+  } catch (error) {
+    console.log(error);
+  }
 });
 
-function addParagraph(element, text) {
-  let p = document.createElement("p");
-  p.innerText = text;
-  element.appendChild(p);
-}
-
-function addPeople() {
-  const humansDiv = document.querySelector('.humans');
-
-  for (let i = 0; i < users.length; i++) {
-    let person = users[i];
-    let personDiv = document.createElement("div");
-
-    addParagraph(personDiv, `Name: ${person.name}`);
-    addParagraph(personDiv, `Height: ${person.height}`);
-    addParagraph(personDiv, `Mass: ${person.mass}`);
-    addParagraph(personDiv, `Skin Color: ${person.skin_color}`);
-    addParagraph(personDiv, `Eye Color: ${person.eye_color}`);
-    addParagraph(personDiv, `Birth Year: ${person.birth_year}`);
-    addParagraph(personDiv, `Gender: ${person.gender}`);
-
-    humansDiv.appendChild(personDiv);
+planetsBtn.addEventListener('click', async () => {
+  try {
+    const planets = await fetchEntities('planets');
+    renderList(planets, 'planets');
+  } catch (error) {
+    console.log(error);
   }
-}
+});
 
-
-
-function addVehicles() {
-  const vehiclesDiv = document.querySelector('.transport');
-
-  for (let j = 0; j < vehicles.length; j++) {
-    let vehicle = vehicles[j];
-    let vehicleDiv = document.createElement("div");
-
-    let name = document.createElement("p");
-    name.innerHTML = `Name: ${vehicle.name}`;
-
-    let model = document.createElement("p");
-    model.innerHTML = `Height: ${vehicle.model}`;
-
-    let manufacturer = document.createElement("p");
-    manufacturer.innerHTML = `Manufacturer: ${vehicle.manufacturer}`;
-
-    let cost_in_credits = document.createElement("p");
-    cost_in_credits.innerHTML = `Cost in credits: ${vehicle.cost_in_credits}`;
-
-    let length = document.createElement("p");
-    length.innerHTML = `Length: ${vehicle.length}`;
-
-    let max_atmosphering_speed = document.createElement("p");
-    max_atmosphering_speed.innerHTML = `Max atmosphering speed: ${vehicle.max_atmosphering_speed}`;
-
-    let crew = document.createElement("p");
-    crew.innerHTML = `Crew: ${vehicle.crew}`;
-
-    let passengers = document.createElement("p");
-    passengers.innerHTML = `Passengers: ${vehicle.passengers}`;
-
-    let cargo_capacity = document.createElement("p");
-    cargo_capacity.innerHTML = `Cargo capacity: ${vehicle.cargo_capacity}`;
-
-    vehicleDiv.appendChild(name);
-    vehicleDiv.appendChild(model);
-    vehicleDiv.appendChild(manufacturer);
-    vehicleDiv.appendChild(cost_in_credits);
-    vehicleDiv.appendChild(length);
-    vehicleDiv.appendChild(max_atmosphering_speed);
-    vehicleDiv.appendChild(crew);
-    vehicleDiv.appendChild(passengers);
-    vehicleDiv.appendChild(cargo_capacity);
-    vehiclesDiv.appendChild(vehicleDiv);
+vehiclesBtn.addEventListener('click', async () => {
+  try {
+    const vehicles = await fetchEntities('vehicles');
+    renderList(vehicles, 'vehicles');
+  } catch (error) {
+    console.log(error);
   }
+});
+
+const filterInput = document.getElementById('input');
+
+filterInput.addEventListener('input', () => {
+  const filterValue = filterInput.value.toLowerCase();
+  const listItems = document.querySelectorAll('.list-item');
+  listItems.forEach(item => {
+    const itemValue = item.textContent.toLowerCase();
+    if (itemValue.includes(filterValue)) {
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+});
+
+const maleCheckbox = document.getElementById('male-checkbox');
+const femaleCheckbox = document.getElementById('female-checkbox');
+
+maleCheckbox.addEventListener('change', () => {
+  if (maleCheckbox.checked) {
+    selectedGender = 'male';
+  } else {
+    selectedGender = '';
+  }
+  init();
+});
+
+femaleCheckbox.addEventListener('change', () => {
+  if (femaleCheckbox.checked) {
+    selectedGender = 'female';
+  } else {
+    selectedGender = '';
+  }
+  init();
+});
+function init() {
+fetchEntities('people')
+.then(people => renderList(people, 'people'));
 }
 
-
-const showAfterClickPeople = () => {
-  let humansDiv = document.querySelector('.humans');
-  humansDiv.classList.add('humans--visible');
-}
-document.getElementById('people-btn').addEventListener('click', addPeople);
-document.getElementById('people-btn').addEventListener('click', showAfterClickPeople);
-
-
-
-const showAfterClickVehicles = () => {
-  let vehiclesDiv = document.querySelector('.transport');
-  vehiclesDiv.classList.add('transport--visible');
-}
-document.getElementById('vehicles-btn').addEventListener('click', addVehicles);
-document.getElementById('vehicles-btn').addEventListener('click', showAfterClickVehicles);
+init();

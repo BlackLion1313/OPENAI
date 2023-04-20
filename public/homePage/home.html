@@ -8,6 +8,7 @@
     <title>SWAPI</title>
   </head>
   <body>
+ 
     <nav>
       <ul>
         <li><a href="#">Home</a></li>
@@ -16,27 +17,30 @@
       </ul>
     </nav>
 
-    <div class="container">
-      <div class="filter_container">
-        <h1>Filtration</h1>
-        <form action="" id="filter-form">
-          <input type="text" id="inp-name" placeholder="Name" />
-          <input type="number" id="inp-height" placeholder="Height" />
-          <button type="submit">Filter</button>
-          <div class="users-list"></div>
-        </form>
-      </div>
-  
-      <div id="hiddenText"></div>
-      <div class="btn-container">
+    <div class="nav">
+      <h2>Find Your Hero</h2>
+    <div id="filter-container">
+      <label for="male-checkbox">Male</label>
+      <input type="checkbox" id="male-checkbox">
+      <label for="female-checkbox">Female</label>
+      <input type="checkbox" id="female-checkbox">
+      <input type="text" id="input" placeholder="Filter">
+    </div>
+    <div id="btns">
+      <button id="characters-btn">Characters</button>
+      <button id="planets-btn">Planets</button>
+      <button id="vehicles-btn">Vehicles</button>
+    </div>
+    <div id="list-container"></div>
+    <div id="details-container"></div>
+      <!-- <div class="btn-container">
         <button id="people-btn" type="button">PEOPLE</button>
         <button id="vehicles-btn" type="button">VEHICLES</button>
       </div>
       <div class="humans"></div>
       <div class="transport"></div>
-    </div>
+    </div> -->
   
-    <script src="data.js"></script>
     <script src="home.js"></script>
   </body>
   </html>
