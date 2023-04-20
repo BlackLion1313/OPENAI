@@ -2,8 +2,9 @@
 const apiUrl = 'https://swapi.dev/api/';
 
 let selectedGender = '';
-
 async function fetchEntities(entity) {
+  const spinner = document.getElementById('spinner');
+  spinner.style.display = 'block'; // show the spinner
   let allResults = [];
   let nextUrl = apiUrl + entity + (selectedGender ? `?gender=${selectedGender}` : '');
   while (nextUrl) {
@@ -17,14 +18,25 @@ async function fetchEntities(entity) {
       break;
     }
   }
+  spinner.style.display = 'none'; // hide the spinner
   return allResults;
 }
 
-function renderList(list, entity) {
+
+function renderList(list, entity, category) {
   const listContainer = document.getElementById('list-container');
   listContainer.innerHTML = '';
   list.forEach(item => {
-    if (!selectedGender || item.gender.toLowerCase() === selectedGender) {
+    if (entity === category && (!selectedGender || item.gender.toLowerCase() === selectedGender)) {
+      const listItem = document.createElement('div');
+      listItem.classList.add('list-item');
+      listItem.textContent = item.name;
+      listItem.addEventListener('click', () => {
+        renderDetails(item, entity);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+      listContainer.appendChild(listItem);
+    } else if (entity !== category) {
       const listItem = document.createElement('div');
       listItem.classList.add('list-item');
       listItem.textContent = item.name;
@@ -60,6 +72,9 @@ charactersBtn.addEventListener('click', async () => {
   try {
     const people = await fetchEntities('people');
     renderList(people, 'people');
+    charactersBtn.classList.add('active');
+    planetsBtn.classList.remove('active');
+    vehiclesBtn.classList.remove('active');
   } catch (error) {
     console.log(error);
   }
@@ -69,6 +84,9 @@ planetsBtn.addEventListener('click', async () => {
   try {
     const planets = await fetchEntities('planets');
     renderList(planets, 'planets');
+    planetsBtn.classList.add('active');
+    charactersBtn.classList.remove('active');
+    vehiclesBtn.classList.remove('active');
   } catch (error) {
     console.log(error);
   }
@@ -78,10 +96,14 @@ vehiclesBtn.addEventListener('click', async () => {
   try {
     const vehicles = await fetchEntities('vehicles');
     renderList(vehicles, 'vehicles');
+    vehiclesBtn.classList.add('active');
+    charactersBtn.classList.remove('active');
+    planetsBtn.classList.remove('active');
   } catch (error) {
     console.log(error);
   }
 });
+
 
 const filterInput = document.getElementById('input');
 
@@ -108,7 +130,16 @@ maleCheckbox.addEventListener('change', () => {
   } else {
     selectedGender = '';
   }
-  init();
+  if (document.getElementById('characters-btn').classList.contains('active')) {
+    fetchEntities('people')
+      .then(people => renderList(people, 'people', 'characters'));
+  } else if (document.getElementById('planets-btn').classList.contains('active')) {
+    fetchEntities('planets')
+      .then(planets => renderList(planets, 'planets', 'planets'));
+  } else if (document.getElementById('vehicles-btn').classList.contains('active')) {
+    fetchEntities('vehicles')
+      .then(vehicles => renderList(vehicles, 'vehicles', 'vehicles'));
+  }
 });
 
 femaleCheckbox.addEventListener('change', () => {
@@ -118,12 +149,21 @@ femaleCheckbox.addEventListener('change', () => {
   } else {
     selectedGender = '';
   }
-  init();
+  if (document.getElementById('characters-btn').classList.contains('active')) {
+    fetchEntities('people')
+      .then(people => renderList(people, 'people', 'characters'));
+  } else if (document.getElementById('planets-btn').classList.contains('active')) {
+    fetchEntities('planets')
+      .then(planets => renderList(planets, 'planets', 'planets'));
+  } else if (document.getElementById('vehicles-btn').classList.contains('active')) {
+    fetchEntities('vehicles')
+      .then(vehicles => renderList(vehicles, 'vehicles', 'vehicles'));
+  }
 });
 
 function init() {
   fetchEntities('people')
     .then(people => renderList(people, 'people'));
 }
-
+charactersBtn.classList.add('active');
 init();
