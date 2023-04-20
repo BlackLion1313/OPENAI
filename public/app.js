@@ -1,3 +1,4 @@
+"use strict";
 // Получение элемента формы с идентификатором "form"
 const form = document.getElementById("form");
 
@@ -9,7 +10,7 @@ const onSubmit = (e) => {
   const typeQuery = form.elements["type"].value;
   // Получение значения поля "message" из формы
   const message = form.elements["message"].value;
-  
+
   // Формирование объекта с данными для отправки на сервер
   const data = {
     type: typeQuery,

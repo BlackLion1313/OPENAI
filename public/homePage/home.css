@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Times New Roman', Times, serif;
   font-size: 16px;
   color: #fff;
   line-height: 1.5;
@@ -17,19 +17,6 @@ body {
   background-attachment: fixed;
 }
 
-.container {
-  margin: 0 auto;
-  padding: 20px;
-  text-align: center;
-}
-
-.btn-container {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  margin-left: 140px;
-  margin-right: 140px;
-}
 
 button {
   background-color: #007bff;
@@ -46,12 +33,7 @@ button:hover {
   background-color: #0069d9;
 }
 
-/* Styles for the people section */
-.humans,
-.transport {
-  display: none;
-  padding: 20px;
-}
+
 #list-container {
     display: inline-flex;
     justify-content: center;
@@ -64,17 +46,6 @@ button:hover {
     font-size: 20px;
 }
 
-#details-container {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 77px;
-  width: 100%;
-  margin-bottom: 244px;
-  flex-direction: column;
-  text-align: center;
-  font-size: 20px;
-}
 .list-item {
   padding: 10px;
   border-radius: 10px;
@@ -90,6 +61,19 @@ button:hover {
   background-color: #007bff;
 }
 
+#details-container {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 77px;
+  width: 100%;
+  margin-bottom: 244px;
+  flex-direction: column;
+  text-align: center;
+  font-size: 20px;
+}
+
+
 
 .detail-item {
   padding: 10px;
@@ -100,27 +84,6 @@ button:hover {
   box-shadow: 0 5px 8px rgba(18, 84, 182, 0.884);
 }
 
-
-.humans--visible,
-.transport--visible {
-    display: block;
-    border: 3px solid #ccc;
-    border-radius: 5px;
-    background-color: rgb(22, 26, 55);
-    opacity: 0.7;
-    gap: 30px;
-    box-shadow: 2px 2px 5px rgba(155, 31, 31, 0.1);
-    margin-bottom: 33px;
-    padding: 26px;
-    font-size: 18px;
-    font-weight: bold;
-    color: #fff;
-    width: 25%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    margin-left: 650px;
-}
 
 h2 {
     text-align: right;
@@ -164,31 +127,31 @@ input[type="checkbox"] {
 
 
 nav {
-  background-color: #007bff;
-  box-shadow: 0 5px 8px rgba(18, 84, 182, 0.884);
-  position: sticky;
-  top: 0;
-  text-transform: uppercase;
+	background-color: #007bff;
+	box-shadow: 0 5px 8px rgba(18, 84, 182, 0.884);
+	position: sticky;
+	top: 0;
+	text-transform: uppercase;
   z-index: 10;
 }
 
 nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+	list-style: none;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 60px;
+	justify-content: space-between;
 }
-
 
 
 nav ul li a {
-  color: white;
-  display: block;
-  padding: 20px;
+	color: white;
+	display: block;
+	padding: 20px;
 }
+
+nav ul li a:hover {
+  color: #ccc;
+}
+
 
 
 #btns {

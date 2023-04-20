@@ -1,3 +1,4 @@
+"use strict";
 const apiUrl = 'https://swapi.dev/api/';
 
 let selectedGender = '';
