@@ -4,14 +4,20 @@ const apiUrl = 'https://swapi.dev/api/';
 let selectedGender = '';
 
 async function fetchEntities(entity) {
-  try {
-    const url = apiUrl + entity + (selectedGender ? `?gender=${selectedGender}` : '');
-    const response = await fetch(url);
-    const data = await response.json();
-    return data.results;
-  } catch (error) {
-    console.log(error);
+  let allResults = [];
+  let nextUrl = apiUrl + entity + (selectedGender ? `?gender=${selectedGender}` : '');
+  while (nextUrl) {
+    try {
+      const response = await fetch(nextUrl);
+      const data = await response.json();
+      allResults = allResults.concat(data.results);
+      nextUrl = data.next;
+    } catch (error) {
+      console.log(error);
+      break;
+    }
   }
+  return allResults;
 }
 
 function renderList(list, entity) {
@@ -98,6 +104,7 @@ const femaleCheckbox = document.getElementById('female-checkbox');
 maleCheckbox.addEventListener('change', () => {
   if (maleCheckbox.checked) {
     selectedGender = 'male';
+    femaleCheckbox.checked = false;
   } else {
     selectedGender = '';
   }
@@ -107,6 +114,7 @@ maleCheckbox.addEventListener('change', () => {
 femaleCheckbox.addEventListener('change', () => {
   if (femaleCheckbox.checked) {
     selectedGender = 'female';
+    maleCheckbox.checked = false;
   } else {
     selectedGender = '';
   }
