@@ -4,7 +4,7 @@ const apiUrl = 'https://swapi.dev/api/';
 let selectedGender = '';
 async function fetchEntities(entity) {
   const spinner = document.getElementById('spinner');
-  spinner.style.display = 'block'; // show the spinner
+  spinner.style.display = 'block';
   let allResults = [];
   let nextUrl = apiUrl + entity + (selectedGender ? `?gender=${selectedGender}` : '');
   while (nextUrl) {
@@ -18,7 +18,7 @@ async function fetchEntities(entity) {
       break;
     }
   }
-  spinner.style.display = 'none'; // hide the spinner
+  spinner.style.display = 'none';
   return allResults;
 }
 
@@ -48,6 +48,7 @@ function renderList(list, entity, category) {
     }
   });
 }
+
 
 function renderDetails(item, entity) {
   const detailsContainer = document.getElementById('details-container');
@@ -160,6 +161,7 @@ femaleCheckbox.addEventListener('change', () => {
       .then(vehicles => renderList(vehicles, 'vehicles', 'vehicles'));
   }
 });
+
 
 function init() {
   fetchEntities('people')

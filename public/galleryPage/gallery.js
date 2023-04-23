@@ -12,7 +12,7 @@ function slideshow() {
   slideIndex++;
   if (slideIndex > images.length) { slideIndex = 1 }
   images[slideIndex - 1].classList.add('active');
-  setTimeout(slideshow, 4000); // Change image every 5 seconds
+  setTimeout(slideshow, 4000);
 }
 
 function myFunction() {
