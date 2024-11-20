@@ -23,13 +23,11 @@ const onSubmit = (e) => {
     const data = await res.json();
     if (typeQuery === "text") {
 
-      // Получение ответа текстового формата
       const { text } = data;
 
       if (text) {
         const answer = document.createElement("div");
 
-        // Разбиение текста ответа на блоки и добавление их в созданный элемент
         const blocks = text
           .split("\n")
           .map((b) => `<div>${b}</div>`)
@@ -41,7 +39,6 @@ const onSubmit = (e) => {
       }
 
     } else {
-      // Получение ответа в формате изображения
       const { images } = data;
       if (images) {
         images.forEach(({ image }) => {
